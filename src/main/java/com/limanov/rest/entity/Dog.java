@@ -1,9 +1,7 @@
 package com.limanov.rest.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 
@@ -12,19 +10,18 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "dogs")
+@Builder
+@AllArgsConstructor
 public class Dog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
     @Column(name = "name")
-    private
     String name;
     @Column(name = "age")
-    private
     int age;
     @Column(name = "weight")
-    private
     int weight;
 
     public Dog(String name, int age, int weight) {
