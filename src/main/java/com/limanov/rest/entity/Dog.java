@@ -1,37 +1,31 @@
 package com.limanov.rest.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 
-@Getter
-@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "dogs")
-@Builder
+@SuperBuilder
+@Setter
+@Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Dog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @Column(name = "name")
-    String name;
+    private String name;
     @Column(name = "age")
-    int age;
+    private int age;
     @Column(name = "weight")
-    int weight;
-
-    public Dog(String name, int age, int weight) {
-        this.name = name;
-        this.age = age;
-        this.weight = weight;
-    }
-
-    public Dog() {
-    }
+    private int weight;
 
     @Override
     public String toString() {
