@@ -2,6 +2,7 @@ package com.limanov.rest.controller;
 
 import com.limanov.rest.dto.DogDto;
 import com.limanov.rest.service.DogService;
+import com.limanov.rest.service.KafkaProducer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
@@ -17,11 +18,14 @@ import java.util.List;
 @Data
 public class MainController {
     private final DogService dogService;
+    private final KafkaProducer kafkaProducer;
 
 
-    @GetMapping("/main")
-    public String getMainMessage() {
-        return "Hello Everyone!";
+    @GetMapping(value = "{firstName}")
+    public String getMainMessage(@PathVariable("firstName") String firstName) {
+        kafkaProducer.sendMessage(firstName);
+        return String.format(
+                "{\" \n message\":\"Hello %s\" \n}", firstName );
     }
 
     @Operation(
