@@ -1,29 +1,21 @@
 package com.limanov.rest.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 
 
-@Setter
+@Getter
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
+@Setter
 public class DogDto implements Serializable {
   private String name;
   private int age;
   private int weight;
+  private Long id;
 
-  public String getName() {
-    return name;
-  }
-
-  public int getAge() {
-    return age;
-  }
-
-  public int getWeight() {
-    return weight;
-  }
 }

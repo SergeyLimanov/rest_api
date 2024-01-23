@@ -23,9 +23,8 @@ public class MainController {
 
     @GetMapping(value = "{firstName}")
     public String getMainMessage(@PathVariable("firstName") String firstName) {
-        kafkaProducer.sendMessage(firstName);
         return String.format(
-                "{\" \n message\":\"Hello %s\" \n}", firstName );
+                "{\" \n message\":\"Hello %s\" \n}", firstName);
     }
 
     @Operation(
@@ -42,8 +41,9 @@ public class MainController {
     )
     @GetMapping("/dogs/id")
     public DogDto getDogById(@RequestParam Long id) {
-
-        return dogService.getById(id);
+        DogDto byId = dogService.getById(id);
+        kafkaProducer.produce(byId);
+        return byId;
     }
 
     @Operation(
