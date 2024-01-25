@@ -13,9 +13,9 @@ import java.util.List;
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI openAPI( @Value("${swagger_server_url}") String swaggerServerUrl) {
+    public OpenAPI openAPI() {
         return new OpenAPI()
-                .servers(List.of(new Server().url(swaggerServerUrl).description("With my description")))
+                .servers(List.of(new Server().url("http://localhost:8080").description("With my description")))
                 .info(new Info().title("My dog API"));
     }
 }
