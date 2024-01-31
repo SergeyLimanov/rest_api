@@ -7,9 +7,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @Tag(name = "main Dog controller")
@@ -19,7 +23,6 @@ import java.util.List;
 public class MainController {
     private final DogService dogService;
     private final KafkaProducer kafkaProducer;
-
 
     @GetMapping(value = "{firstName}")
     public String getMainMessage(@PathVariable("firstName") String firstName) {
@@ -41,9 +44,11 @@ public class MainController {
     )
     @GetMapping("/dogs/id")
     public DogDto getDogById(@RequestParam Long id) {
-        DogDto byId = dogService.getById(id);
-        kafkaProducer.produce(byId);
-        return byId;
+        Link getAll = linkTo(methodOn(MainController.class).getAllDog()).withSelfRel();
+        DogDto dogDto = dogService.getById(id);
+        dogDto.add(getAll);
+        kafkaProducer.produce(dogDto);
+        return dogDto;
     }
 
     @Operation(
@@ -56,12 +61,13 @@ public class MainController {
         return dogService.createOrUpdate(dogDto);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/dogs/delete/id")
     @Operation(
             summary = "remove Dog from APP by id"
     )
-    public void delete(@RequestParam Long id) {
+    public String delete(@RequestParam Long id) {
         dogService.deleteById(id);
+        return String.format("dog with id %s have been deleted", id);
     }
 
 }
